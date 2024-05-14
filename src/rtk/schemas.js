@@ -1,38 +1,41 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import apiClient from '../apis/apiClient'
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import apiClient from "../apis/apiClient";
 
 const initialState = {
-    loading: false,
-    users: [],
-    error: ''
-  }
+  loading: false,
+  schemas: [],
+  error: "",
+};
 
-//   createAsyncThunk('',async ()=>{
-//     const response = await apiClient.get(userId)
-//     return response.data
-//   })
+export const fetchSchemas = createAsyncThunk(
+  "schemas/fetchSchemas",
+  async () => {
+    const response = await apiClient.get("/catalog");
+    return response.data;
+  }
+);
 
 export const schemasSlice = createSlice({
-  name: 'schemas',
+  name: "schemas",
   initialState,
-  reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1
-    },
-    decrement: (state) => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchSchemas.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchSchemas.fulfilled, (state, action) => {
+        state.loading = false;
+        state.schemas = action.payload;
+        state.error = "";
+      })
+      .addCase(fetchSchemas.rejected, (state, action) => {
+        state.loading = false;
+        state.schemas = [];
+        state.error = action.error.message;
+      });
   },
-})
+});
 
-// Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = schemasSlice.actions
 
-export default schemasSlice.reducer
+export default schemasSlice.reducer;
