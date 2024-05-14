@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
+import DashboardView from '../components/Dashboard';
 
-// import { AppView } from 'src/sections/overview/view';
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ export default function DashboardPage() {
       <Helmet>
         <title> Dashboard | DataBricks </title>
       </Helmet>
-
+    <DashboardView />
     </>
   );
 }
