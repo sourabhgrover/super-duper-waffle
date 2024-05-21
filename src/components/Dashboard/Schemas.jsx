@@ -1,6 +1,6 @@
 import { Box, Card, CardHeader, Paper, Skeleton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSchemas } from "../../rtk/schemas";
+import { fetchSchemas , setSelectedSchemaId } from "../../rtk/schemas";
 import { useEffect } from "react";
 
 const Schemas = () => {
@@ -10,7 +10,10 @@ const Schemas = () => {
     dispatch(fetchSchemas());
   }, []);
 
-  console.log(schemas);
+  const handleClick = (schema) => {
+    dispatch(setSelectedSchemaId(schema._id))
+  }
+ 
 
   return (
     <Card>
@@ -35,11 +38,13 @@ const Schemas = () => {
         )}
         {!schemas.loading && schemas.schemas.length ? (
           <>
-            {schemas?.schemas.map((schema) => (
+            {schemas?.schemas.map((schema,index) => (
               <Paper
-                key={schema.name}
+                key={index}
                 variant="outlined"
                 sx={{ py: 2.5, textAlign: "center", borderStyle: "dashed" }}
+                // onClick={()=>handleClick(schema)}
+                onClick={()=>handleClick(schema)}
               >
                 {schema.name}
               </Paper>

@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   schemas: [],
   error: "",
+  selectedSchemaId : ""
 };
 
 export const fetchSchemas = createAsyncThunk(
@@ -18,7 +19,11 @@ export const fetchSchemas = createAsyncThunk(
 export const schemasSlice = createSlice({
   name: "schemas",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedSchemaId : (state,action) => {
+      state.selectedSchemaId = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSchemas.pending, (state) => {
@@ -37,5 +42,6 @@ export const schemasSlice = createSlice({
   },
 });
 
+export const {setSelectedSchemaId} = schemasSlice.actions
 
 export default schemasSlice.reducer;
