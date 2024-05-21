@@ -1,9 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTableList } from "../../rtk/tableList";
 import { useEffect, useState } from "react";
-import { Box, Button, Card, CardHeader, Container, Stack, Table, TableBody, TableContainer, Typography } from "@mui/material";
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
+import {
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  Container,
+  Stack,
+  Table,
+  TableBody,
+  TableContainer,
+  Typography,
+} from "@mui/material";
+import Iconify from "src/components/iconify";
+import Scrollbar from "src/components/scrollbar";
 import UserTableHead from "../user-table-head";
 import TableEmptyRows from "../table-empty-rows";
 import TableNoData from "../table-no-data";
@@ -11,32 +22,31 @@ import UserTableRow from "../user-table-row";
 
 const TableList = () => {
   const dispatch = useDispatch();
-  const tableList = useSelector(state => state.tableList)
-  const {schemas,selectedSchemaId} = useSelector((state) => state.schemas);
+  const tableList = useSelector((state) => state.tableList);
+  const { schemas, selectedSchemaId } = useSelector((state) => state.schemas);
   const { data } = tableList;
   useEffect(() => {
     if (selectedSchemaId) {
-        
-        const {catalog_name, name } = schemas.find(schema => schema._id === selectedSchemaId);
-        if(catalog_name && name){
-            dispatch(
-                fetchTableList({
-                    catalogName: catalog_name,
-                    schemaName: name,
-                })
-            );
-        }
-        
+      const { catalog_name, name } = schemas.find(
+        (schema) => schema._id === selectedSchemaId
+      );
+      if (catalog_name && name) {
+        dispatch(
+          fetchTableList({
+            catalogName: catalog_name,
+            schemaName: name,
+          })
+        );
+      }
     }
-  
   }, [selectedSchemaId]);
 
-  const [filterName, setFilterName] = useState('');
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
+  const [filterName, setFilterName] = useState("");
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("name");
 
-  const notFound =  !!filterName;
-
+  const notFound = !!filterName;
+  const noResultFound = !data.length ? true : false
   return (
     <Container>
       {/* <Stack
@@ -50,52 +60,51 @@ const TableList = () => {
       </Stack> */}
 
       <Card>
-      <CardHeader title="Table List" />
+        <CardHeader title="Table List" />
 
-      <Box
+        <Box
         // sx={{
         //   p: 3,
         //   gap: 2,
         //   display: "grid",
         //   gridTemplateColumns: "repeat(2, 1fr)",
         // }}
-      >
-        {/* <UserTableToolbar
+        >
+          {/* <UserTableToolbar
           numSelected={selected.length}
           filterName={filterName}
           onFilterName={handleFilterByName}
         /> */}
 
-        <Scrollbar>
-          <TableContainer sx={{ overflow: "unset" }}>
-            <Table sx={{ minWidth: 800 }}>
-              <UserTableHead
-                order={order}
-                orderBy={orderBy}
-                rowCount={data.length}
-                // numSelected={selected.length}
-                // onRequestSort={handleSort}
-                // onSelectAllClick={handleSelectAllClick}
-                headLabel={[
-                  { id: "name", label: "Name" },
-                  { id: "owner", label: "Owner" },
-                  { id: "generation", label: "Generation" },
-                  { id: "" },
-                ]}
-              />
-              <TableBody>
-              {data
-                  .map((row,index) => (
+          <Scrollbar>
+            <TableContainer sx={{ overflow: "unset" }}>
+              <Table sx={{ minWidth: 800 }}>
+                <UserTableHead
+                  order={order}
+                  orderBy={orderBy}
+                  rowCount={data.length}
+                  // numSelected={selected.length}
+                  // onRequestSort={handleSort}
+                  // onSelectAllClick={handleSelectAllClick}
+                  headLabel={[
+                    { id: "name", label: "Name" },
+                    { id: "owner", label: "Owner" },
+                    { id: "generation", label: "Generation" },
+                    { id: "" },
+                  ]}
+                />
+                <TableBody>
+                  {data.map((row, index) => (
                     <UserTableRow
                       key={index}
                       name={row.name}
                       owner={row.owner}
                       generation={row.generation}
-                    //   selected={selected.indexOf(row.name) !== -1}
-                    //   handleClick={(event) => handleClick(event, row.name)}
+                      //   selected={selected.indexOf(row.name) !== -1}
+                      //   handleClick={(event) => handleClick(event, row.name)}
                     />
                   ))}
-                {/* {dataFiltered
+                  {/* {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <UserTableRow
@@ -111,18 +120,20 @@ const TableList = () => {
                     />
                   ))} */}
 
-                {/* <TableEmptyRows
+                  {/* <TableEmptyRows
                   height={77}
                   emptyRows={emptyRows(page, rowsPerPage, users.length)}
                 /> */}
 
-                {notFound && <TableNoData query={filterName} />}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+                  {/* {notFound && <TableNoData query={filterName} />} */}
+                  {noResultFound && (<TableNoData query="" />)}
+                  {/* <TableNoData /> */}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Scrollbar>
 
-        {/* <TablePagination
+          {/* <TablePagination
           page={page}
           component="div"
           count={users.length}
