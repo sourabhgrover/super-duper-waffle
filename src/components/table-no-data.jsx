@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 // ----------------------------------------------------------------------
 
 export default function TableNoData({ query }) {
-  console.log("Asa")
   return (
     <TableRow>
       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>

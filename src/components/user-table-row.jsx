@@ -14,6 +14,9 @@ import IconButton from '@mui/material/IconButton';
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
+import { redirect, useNavigate } from "react-router-dom";
+
+
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -25,7 +28,9 @@ export default function UserTableRow({
   isVerified,
   status,
   handleClick,
+  tableId
 }) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -35,6 +40,10 @@ export default function UserTableRow({
   const handleCloseMenu = () => {
     setOpen(null);
   };
+
+  const redirect = (tableId) =>{
+    navigate(`/table-details/${tableId}`)
+  }
 
   return (
     <>
@@ -73,7 +82,13 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleCloseMenu}>
+        {/* <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}> */}
+        <MenuItem onClick={()=>redirect(tableId)} sx={{ color: 'error.main' }}>
+          <Iconify icon="ep:view" sx={{ mr: 2 }} />
+          View Details
+        </MenuItem>
+
+        {/* <MenuItem onClick={handleCloseMenu}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
@@ -81,7 +96,7 @@ export default function UserTableRow({
         <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
-        </MenuItem>
+        </MenuItem> */}
       </Popover>
     </>
   );

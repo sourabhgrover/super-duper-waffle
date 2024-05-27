@@ -19,6 +19,7 @@ import UserTableHead from "../user-table-head";
 import TableEmptyRows from "../table-empty-rows";
 import TableNoData from "../table-no-data";
 import UserTableRow from "../user-table-row";
+import UserTableToolbar from "../user-table-toolbar";
 
 const TableList = () => {
   const dispatch = useDispatch();
@@ -44,7 +45,17 @@ const TableList = () => {
   const [filterName, setFilterName] = useState("");
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
+  const [selected, setSelected] = useState([]);
+  const handleFilterByName = (event) => {
+    // setPage(0);
+    setFilterName(event.target.value);
+  };
 
+//   const dataFiltered = applyFilter({
+//     inputData: users,
+//     comparator: getComparator(order, orderBy),
+//     filterName,
+//   });
   const notFound = !!filterName;
   const noResultFound = !data.length ? true : false
   return (
@@ -100,6 +111,7 @@ const TableList = () => {
                       name={row.name}
                       owner={row.owner}
                       generation={row.generation}
+                      tableId={row._id}
                       //   selected={selected.indexOf(row.name) !== -1}
                       //   handleClick={(event) => handleClick(event, row.name)}
                     />
