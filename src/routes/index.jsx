@@ -13,7 +13,8 @@ export const router = createBrowserRouter([
     element: (<DashboardLayout><Outlet /></DashboardLayout>),
   children: [
     { element: <IndexPage />, index: true },
-    { path: 'table-details/66473e4ce9116cc75626cd48', element: <TableDetails /> },
+    // { path: 'table-details/66473e4ce9116cc75626cd48', element: <TableDetails /> },
+    { path: 'table-details', element: <TableDetails /> },
   ],
   },
 ]);
