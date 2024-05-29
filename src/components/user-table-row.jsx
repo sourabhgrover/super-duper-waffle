@@ -1,21 +1,20 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import PropTypes from "prop-types";
 
-import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
-import Popover from '@mui/material/Popover';
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
-import MenuItem from '@mui/material/MenuItem';
-import TableCell from '@mui/material/TableCell';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import Popover from "@mui/material/Popover";
+import TableRow from "@mui/material/TableRow";
+import Checkbox from "@mui/material/Checkbox";
+import MenuItem from "@mui/material/MenuItem";
+import TableCell from "@mui/material/TableCell";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 
 // import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
+import Iconify from "src/components/iconify";
 
 import { redirect, useNavigate } from "react-router-dom";
-
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +27,7 @@ export default function UserTableRow({
   isVerified,
   status,
   handleClick,
-  tableId
+  tableId,
 }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(null);
@@ -41,16 +40,15 @@ export default function UserTableRow({
     setOpen(null);
   };
 
-  const redirect = (tableId) =>{
-    navigate(`/table-details/${tableId}`)
-  }
+  const redirect = (tableId) => {
+    // navigate(`/table-details/${tableId}`)
+    navigate(`/table-details/`, { state: { id: tableId } });
+  };
 
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
-        <TableCell padding="checkbox">
-          
-        </TableCell>
+        <TableCell padding="checkbox"></TableCell>
 
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
@@ -64,7 +62,6 @@ export default function UserTableRow({
 
         <TableCell>{generation}</TableCell>
 
-
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
@@ -76,14 +73,17 @@ export default function UserTableRow({
         open={!!open}
         anchorEl={open}
         onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
         PaperProps={{
           sx: { width: 140 },
         }}
       >
         {/* <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}> */}
-        <MenuItem onClick={()=>redirect(tableId)} sx={{ color: 'error.main' }}>
+        <MenuItem
+          onClick={() => redirect(tableId)}
+          sx={{ color: "error.main" }}
+        >
           <Iconify icon="ep:view" sx={{ mr: 2 }} />
           View Details
         </MenuItem>
