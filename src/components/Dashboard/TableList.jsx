@@ -7,10 +7,13 @@ import {
   Card,
   CardHeader,
   Container,
+  Skeleton,
   Stack,
   Table,
   TableBody,
+  TableCell,
   TableContainer,
+  TableRow,
   Typography,
 } from "@mui/material";
 import Iconify from "src/components/iconify";
@@ -25,7 +28,7 @@ const TableList = () => {
   const dispatch = useDispatch();
   const tableList = useSelector((state) => state.tableList);
   const { schemas, selectedSchemaId } = useSelector((state) => state.schemas);
-  const { data } = tableList;
+  const { data, loading } = tableList;
   useEffect(() => {
     if (selectedSchemaId) {
       const { catalog_name, name } = schemas.find(
@@ -51,13 +54,9 @@ const TableList = () => {
     setFilterName(event.target.value);
   };
 
-//   const dataFiltered = applyFilter({
-//     inputData: users,
-//     comparator: getComparator(order, orderBy),
-//     filterName,
-//   });
+  
   const notFound = !!filterName;
-  const noResultFound = !data.length ? true : false
+  const noResultFound = !data.length ? true : false;
   return (
     <Container>
       {/* <Stack
@@ -81,12 +80,6 @@ const TableList = () => {
         //   gridTemplateColumns: "repeat(2, 1fr)",
         // }}
         >
-          {/* <UserTableToolbar
-          numSelected={selected.length}
-          filterName={filterName}
-          onFilterName={handleFilterByName}
-        /> */}
-
           <Scrollbar>
             <TableContainer sx={{ overflow: "unset" }}>
               <Table sx={{ minWidth: 800 }}>
@@ -105,55 +98,57 @@ const TableList = () => {
                   ]}
                 />
                 <TableBody>
-                  {data.map((row, index) => (
-                    <UserTableRow
-                      key={index}
-                      name={row.name}
-                      owner={row.owner}
-                      generation={row.generation}
-                      tableId={row._id}
-                      //   selected={selected.indexOf(row.name) !== -1}
-                      //   handleClick={(event) => handleClick(event, row.name)}
-                    />
-                  ))}
-                  {/* {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <UserTableRow
-                      key={row.id}
-                      name={row.name}
-                      role={row.role}
-                      status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
-                      selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
-                    />
-                  ))} */}
+                  {loading && (
+                    <>
+                      <TableRow>
+                        <TableCell>
+                          <Skeleton variant="rounded" width={150} height={10} />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton variant="rounded" width={150} height={10} />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton variant="rounded" width={150} height={10} />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton variant="rounded" width={150} height={10} />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>
+                          <Skeleton variant="rounded" width={150} height={10} />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton variant="rounded" width={150} height={10} />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton variant="rounded" width={150} height={10} />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton variant="rounded" width={150} height={10} />
+                        </TableCell>
+                      </TableRow>
+                    </>
+                  )}
+                  {!loading && data.length ? (
+                    <>
+                      {data.map((row, index) => (
+                        <UserTableRow
+                          key={index}
+                          name={row.name}
+                          owner={row.owner}
+                          generation={row.generation}
+                          tableId={row._id}
+                        />
+                      ))}
+                    </>
+                  ) : null}
 
-                  {/* <TableEmptyRows
-                  height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
-                /> */}
-
-                  {/* {notFound && <TableNoData query={filterName} />} */}
-                  {noResultFound && (<TableNoData query="" />)}
-                  {/* <TableNoData /> */}
+                  {!loading && noResultFound && <TableNoData query="" />}
                 </TableBody>
               </Table>
             </TableContainer>
           </Scrollbar>
-
-          {/* <TablePagination
-          page={page}
-          component="div"
-          count={users.length}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
         </Box>
       </Card>
     </Container>
