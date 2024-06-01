@@ -1,7 +1,9 @@
-import { Box, Card, CardHeader, Paper, Skeleton } from "@mui/material";
+import { Box, Card, CardHeader, Paper, Skeleton, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSchemas , setSelectedSchemaId } from "../../rtk/schemas";
+import { fetchSchemas, setSelectedSchemaId } from "../../rtk/schemas";
+import Iconify from "src/components/iconify";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Schemas = () => {
   const dispatch = useDispatch();
@@ -11,9 +13,10 @@ const Schemas = () => {
   }, []);
 
   const handleClick = (schema) => {
-    dispatch(setSelectedSchemaId(schema._id))
-  }
- 
+    dispatch(setSelectedSchemaId(schema._id));
+  };
+
+  
 
   return (
     <Card>
@@ -38,15 +41,30 @@ const Schemas = () => {
         )}
         {!schemas.loading && schemas.schemas.length ? (
           <>
-            {schemas?.schemas.map((schema,index) => (
+            {schemas?.schemas.map((schema, index) => (
               <Paper
                 key={index}
                 variant="outlined"
                 sx={{ py: 2.5, textAlign: "center", borderStyle: "dashed" }}
-                // onClick={()=>handleClick(schema)}
-                onClick={()=>handleClick(schema)}
               >
                 {schema.name}
+                <Stack
+                  direction="row"
+                  flexWrap="wrap"
+                  spacing={1.5}
+                  justifyContent="flex-end"
+                  sx={{
+                    mt: 3,
+                    color: "text.disabled",
+                  }}
+                >
+                  <Link onClick={() => handleClick(schema)}>
+                    <Iconify width={16} icon="eva:eye-fill" sx={{ mr: 0.5 }} />
+                  </Link>
+                  <Link to={`schema-details/${schema._id}`}>
+                  <Iconify width={16} icon="eva:edit-outline" sx={{ mr: 0.5 }} />
+                  </Link>
+                </Stack>
               </Paper>
             ))}
           </>
