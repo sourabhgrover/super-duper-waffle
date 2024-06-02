@@ -1,14 +1,38 @@
-import { Container, TextField, Button } from "@mui/material";
+import { Container, TextField, Button, Box } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateSchema } from "../../rtk/schemaDetails";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSchemaDetails, updateSchema } from "../../rtk/schemaDetails";
 
 const SchemaDetails = () => {
   let { schemaId } = useParams();
   const dispatch = useDispatch();
+  const { schemas } = useSelector((state) => state.schemas);
+  const { loading, schemaDetails } = useSelector(
+    (state) => state.schemaDetails
+  );
+
+  useEffect(() => {
+    const selectedSchema = schemas.find((schema) => schema._id === schemaId);
+    if (selectedSchema) {
+      dispatch(setSchemaDetails(selectedSchema));
+    }
+  }, [schemaId]);
+  useEffect(() => {
+    if (schemaDetails) {
+      setFormData({
+        name: schemaDetails?.customCatalog?.name || schemaDetails?.name || "",
+        catalog_name:
+          schemaDetails?.customCatalog?.catalog_name ||
+          schemaDetails?.catalog_name ||
+          "",
+        owner:
+          schemaDetails?.customCatalog?.owner || schemaDetails?.owner || "",
+      });
+    }
+  }, [schemaDetails]);
   const [formData, setFormData] = useState({
-    name: "",
+    name: schemaDetails?.customCatalog?.name || schemaDetails?.name || "",
     catalog_name: "",
     owner: "",
   });
@@ -23,16 +47,24 @@ const SchemaDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Do something with the form data
-    console.log(formData);
+
     formData._id = schemaId;
-    const res = dispatch(updateSchema(formData));
-    
+    dispatch(updateSchema(formData));
   };
 
   return (
     <Container maxWidth="xl">
-      Schema Details {schemaId}
-      <form onSubmit={handleSubmit}>
+      Schema Details:
+      <Box
+      component="form"
+      sx={{
+        '& > :not(style)': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+      onSubmit={handleSubmit}
+    >
+      {/* <form onSubmit={handleSubmit}> */}
         <TextField
           label="Name"
           variant="outlined"
@@ -57,10 +89,16 @@ const SchemaDetails = () => {
           value={formData.owner}
           onChange={handleChange}
         />
-        <Button type="submit" variant="contained" color="primary">
-          Submit
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={loading}
+        >
+          {loading ? "Loading.." : "Submit"}
         </Button>
-      </form>
+      {/* </form> */}
+      </Box>
     </Container>
   );
 };
