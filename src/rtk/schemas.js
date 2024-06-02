@@ -16,6 +16,11 @@ export const fetchSchemas = createAsyncThunk(
   }
 );
 
+export const updateSchema = createAsyncThunk("schemas/updateSchema", async (schema) => {
+  const response = await apiClient.patch(`/catalog/${schema._id}/createCustomCatalog`, schema);
+  return response.data;
+})
+
 export const schemasSlice = createSlice({
   name: "schemas",
   initialState,
