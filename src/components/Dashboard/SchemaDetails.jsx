@@ -1,8 +1,8 @@
 import { Container, TextField, Button } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { updateSchema } from "../../rtk/schemas";
 import { useDispatch } from "react-redux";
+import { updateSchema } from "../../rtk/schemaDetails";
 
 const SchemaDetails = () => {
   let { schemaId } = useParams();
