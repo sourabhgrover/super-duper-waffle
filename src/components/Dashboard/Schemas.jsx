@@ -47,7 +47,8 @@ const Schemas = () => {
                 variant="outlined"
                 sx={{ py: 2.5, textAlign: "center", borderStyle: "dashed" }}
               >
-                {schema.name}
+                {/* {schema.name} */}
+                {schema?.customCatalog?.name || schema?.name}
                 <Stack
                   direction="row"
                   flexWrap="wrap"
