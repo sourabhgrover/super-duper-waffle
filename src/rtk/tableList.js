@@ -12,8 +12,8 @@ export const fetchTableList = createAsyncThunk(
   async ({ catalogName, schemaName }) => {
     const response = await apiClient.get("/tables/fetchTables", {
       params: {
-        catalogName,
-        schemaName,
+        catalog_name : catalogName,
+        schema_name: schemaName,
       },
     });
     return response.data;

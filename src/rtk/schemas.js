@@ -11,7 +11,8 @@ const initialState = {
 export const fetchSchemas = createAsyncThunk(
   "schemas/fetchSchemas",
   async () => {
-    const response = await apiClient.get("/catalog");
+    // const response = await apiClient.get("/catalog");
+    const response = await apiClient.get("/schemas");
     return response.data;
   }
 );
